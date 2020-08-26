@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme) => ({
 const CitiesList = () => {
   const classes = useStyles();
   const cities = useSelector(state => state.app.cities);
-  console.log(cities);
+  console.log('citiesList: ',cities);
   return(
     <div className={classes.container}>
      {cities.length >0 ? cities.map((city, index) => {
         return <CityCard city={city} key={index} />;
-      }): <div>No ELEMNETS</div>}
+      }): <div>Empty Locations List</div>}
     </div>
   )
 };

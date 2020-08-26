@@ -1,1 +1,1 @@
-export const WEATHER_URL = 'https://www.timeanddate.com/weather/';
+export const API_URL = 'http://localhost:3001/moveo-webcrawl/';

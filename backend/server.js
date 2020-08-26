@@ -1,38 +1,33 @@
-// import app from './app';
-
-// const port = process.env.PORT || '3001';
-
-// app.listen(port, () => {
-//     console.log(`Server is up and listening on port: ${port}`);
-// });
-
-// console.log(`Listening on port ${port}`);
-
-/////////////////////////////////////////////////////////////////////////////////////
 const express = require('express');
 const bodyParser = require('body-parser');
-const pino = require('express-pino-logger')();
+// const pino = require('express-pino-logger')();
 const cheerio = require('cheerio');
 const request = require('request');
-const { WEATHER_URL } = require('../src/constants');
+const cors = require('cors');
+const WEATHER_URL = 'https://www.timeanddate.com/weather/';
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(pino);
-
+// app.use(pino);
+app.use(cors);
+app.get('/ping',(req, res)=>{res.json({result:'pong'})});
 app.get('/moveo-webcrawl/:location', (req, res) => {
   const location = req.params.location;
-  const splittedLocationArray = location.split(' ');
+  const splittedLocationArray = location.split('+');
+  console.log('in server- array',splittedLocationArray);
+  
   const cityName = splittedLocationArray[0];
   const country = splittedLocationArray[1];
+  console.log(cityName, country);
   const url = `${WEATHER_URL}/${country}/${cityName}`;
   request(url, (error, response, html)=>{
     if(!error){
         let weatherDetails = {};
+        weatherDetails.city = cityName;
+        weatherDetails.country = country;
         const $ = cheerio.load(html);
         let imageSrc = $('#cur-weather').attr('src');
         weatherDetails.image= imageSrc;
-        // console.log(imageSrc);  
         $('#qlook').each((i,el) => {
             let temperature = $(el).find('div.h2').text();
             let description = $(el).find('p').first().text();
@@ -40,20 +35,13 @@ app.get('/moveo-webcrawl/:location', (req, res) => {
             weatherDetails.temperature= temperature;
             weatherDetails.description= description;
             weatherDetails.wind= wind;
-
-            // console.log('des:',description);
-            // console.log('temp:',temperature);
-            // console.log('wind:',wind);
           });
-
-
           $('.bk-focus__info').each((i, el)=> {
               let humidity = $(el).find('tr').last().prev().find('td').text();
-            //   console.log(humidity);
               weatherDetails.humidity = humidity;
           });
-          console.log(weatherDetails);
-          res.json(weatherDetails);
+          console.log('weather details from server: ',weatherDetails);
+          res.status(200).json(weatherDetails);
     }
     else{
         res.status(401).json('Location not found, try valid input!');
