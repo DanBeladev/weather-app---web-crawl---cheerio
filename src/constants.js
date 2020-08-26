@@ -1,0 +1,1 @@
+export const WEATHER_URL = 'https://www.timeanddate.com/weather/';
