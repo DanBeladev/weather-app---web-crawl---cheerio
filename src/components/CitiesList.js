@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 const CitiesList = () => {
   const classes = useStyles();
   const cities = useSelector(state => state.app.cities);
-  console.log('citiesList: ',cities);
   return(
     <div className={classes.container}>
      {cities.length >0 ? cities.map((city, index) => {

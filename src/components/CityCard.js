@@ -35,7 +35,6 @@ const useStyles = makeStyles({
 
 const CityCard = (props) => {
   const classes = useStyles();
-  console.log('props: ',props.city);
   return (
     <div
       className='card blue-grey darken-1 col-xs-12 col-sm-6'

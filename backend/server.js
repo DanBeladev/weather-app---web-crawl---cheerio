@@ -9,7 +9,7 @@ const WEATHER_URL = 'https://www.timeanddate.com/weather/';
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(pino);
-app.use(cors);
+app.use(cors());
 app.get('/ping',(req, res)=>{res.json({result:'pong'})});
 app.get('/moveo-webcrawl/:location', (req, res) => {
   const location = req.params.location;

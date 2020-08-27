@@ -9,30 +9,22 @@ import { setCitiesAction, addCityAction } from '../actions/appActions';
 const Home = (props) => {
   const loading = useSelector((state) => state.app.loading);
   const cities = useSelector((state)=> state.app.cities);
+  console.log('cities selector', cities)
   const dispatch = useDispatch();
-  const fetchCities = (cities) => dispatch(setCitiesAction(cities));
-  // const webCrawlMock = (location) => dispatch(webCrawlMockAction(location));
-  // const webCrawl = (location) => dispatch(webCrawlAction(location));
+  const fetchCities = () => dispatch(setCitiesAction(cities));
   const addCity = (location) => dispatch(addCityAction(location));
   
 
   useEffect(() => {
-    console.log('only once in use effect');
     if(cities.length === 0 ){
-      console.log('before adding  cities');
-      // webCrawl('Tel-Aviv Israel');
-      // webCrawl('Madrid Spain');
       addCity('Tel-Aviv Israel');
       addCity('Madrid Spain');
-      console.log('cities after adding: ', cities);
     }
-  },[])
+  },[]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      console.log('cities array state:',cities );
-      fetchCities(cities);
-      console.log('This will run every 5 second!');
+      fetchCities();
     }, 5000);
     return () => clearInterval(interval);
     });

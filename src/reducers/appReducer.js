@@ -12,6 +12,7 @@ import { SHOW_LOADER, ADD_CITY, SET_CITIES } from "../actions/types";
               cities: [...state.cities, action.payload],
             };
             case SET_CITIES:
+              console.log('payload: ', action.payload);              
                 return {
                   ...state,
                   cities: [...action.payload],
