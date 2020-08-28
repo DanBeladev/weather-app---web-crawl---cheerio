@@ -6,6 +6,10 @@ const request = require('request');
 const cors = require('cors');
 const WEATHER_URL = 'https://www.timeanddate.com/weather/';
 
+// TODO: remove
+const fs = require('fs');
+
+
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(pino);
@@ -21,15 +25,27 @@ app.get('/moveo-webcrawl/:location', (req, res) => {
   console.log(cityName, country);
   const url = `${WEATHER_URL}/${country}/${cityName}`;
   request(url, (error, response, html) => {
-    console.log('error obj: ', error);
-    console.log('rse obj: ', response);
-    console.log('html obj: ', html);
+    // console.log('error obj: ', error);
+    // fs.writeFile(new Date().getTime() + 'response.txt', 
+    // response.body , function (err) {
+    //   if (err) return console.log(err);
+    //   console.log('response > response.txt (' + response.length + ')');
+    // });
 
     if (!error) {
       let weatherDetails = {};
       weatherDetails.city = cityName;
       weatherDetails.country = country;
+      // TODO: move the scrapping logic to another place
       const $ = cheerio.load(html);
+      const title = $('title').text();
+      if(title.includes('Unknown address')){
+        // console.log(`going to throw error from server ${cityName} ${country}`);
+        // throw new Error('Location not found, try valid input!') ;
+        res.status(400).json('Location not found, try valid input!');
+        return;
+      }
+      console.log('title: ',title);
       let imageSrc = $('#cur-weather').attr('src');
       weatherDetails.image = imageSrc;
       $('#qlook').each((i, el) => {
@@ -46,7 +62,7 @@ app.get('/moveo-webcrawl/:location', (req, res) => {
       });
       res.status(200).json(weatherDetails);
     } else {
-      res.status(400).json('Location not found, try valid input!');
+      res.status(401).json(`ERROR happened, request failed: ${error}`);
     }
   });
 });

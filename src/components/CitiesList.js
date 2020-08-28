@@ -20,14 +20,18 @@ const useStyles = makeStyles((theme) => ({
 
 const CitiesList = () => {
   const classes = useStyles();
-  const cities = useSelector(state => state.app.cities);
-  return(
+  const cities = useSelector((state) => state.app.cities);
+  return (
     <div className={classes.container}>
-     {cities.length >0 ? cities.map((city, index) => {
-        return <CityCard city={city} key={index} />;
-      }): <FullLoaderPage />}
+      {cities.length > 0 ? (
+        cities.map((city, index) => {
+          return <CityCard city={city} key={index} />;
+        })
+      ) : (
+        <FullLoaderPage />
+      )}
     </div>
-  )
+  );
 };
 
 export default CitiesList;

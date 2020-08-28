@@ -10,13 +10,15 @@ export const getWeatherData = async (locationName) => {
   return weatherDetails;
 };
 
-// Private functions
+// Private function
 const sendGetRequest = async (url, errResponse) => {
   try {
     const res = await axios.get(url);
+    console.log(`in axios the res for ${url} is`, res.data);
     return res.data;
   } catch (error) {
     console.log(`in axios was error in request to ${url}`, error);
-    return errResponse;
+    throw error;
+    // return errResponse;
   }
 };

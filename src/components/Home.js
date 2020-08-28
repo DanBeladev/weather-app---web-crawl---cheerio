@@ -1,26 +1,31 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Container, Grid } from '@material-ui/core';
 import Search from './Search';
 import CitiesList from './CitiesList';
 import FullLoaderPage from './FullLoaderPage';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCitiesAction, addCityAction,showLoaderAction, hideLoaderAction } from '../actions/appActions';
+import {
+  setCitiesAction,
+  addCityAction,
+  showLoaderAction,
+  hideLoaderAction,
+} from '../actions/appActions';
+import { TEL_AVIV, MADRID } from '../constants';
 
 const Home = (props) => {
   const loading = useSelector((state) => state.app.loading);
-  const cities = useSelector((state)=> state.app.cities);
+  const cities = useSelector((state) => state.app.cities);
   const dispatch = useDispatch();
   const fetchCities = () => dispatch(setCitiesAction(cities));
   const addCity = (location) => dispatch(addCityAction(location));
   const showLoader = () => dispatch(showLoaderAction());
   const hideLoader = () => dispatch(hideLoaderAction());
-  
 
   useEffect(() => {
-    if(cities.length === 0 ) {
+    if (cities.length === 0) {
       showLoader();
-      addCity('Tel-Aviv Israel');
-      addCity('Madrid Spain');
+      addCity(TEL_AVIV);
+      addCity(MADRID);
       hideLoader();
     }
 
@@ -30,7 +35,7 @@ const Home = (props) => {
       hideLoader();
     }, 60000);
     return () => clearInterval(interval);
-  },[]);
+  }, []);
 
   return loading ? (
     <FullLoaderPage />

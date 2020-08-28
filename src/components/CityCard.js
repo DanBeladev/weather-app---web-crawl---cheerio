@@ -3,14 +3,14 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   temp: {
-    fontSize: 22  ,
+    fontSize: 22,
     fontWeight: 'bold',
     fontFamily: 'monospace',
     textAlign: 'center',
   },
   icon: {
     height: 100,
-    width:"100%"
+    width: '100%',
   },
   description: {
     fontSize: 20,
@@ -32,19 +32,23 @@ const CityCard = (props) => {
     temperature,
     wind,
   } = props.city;
-  
+
   const classes = useStyles();
-  const cardStyle = {minWidth: 180, maxWidth: 300, margin: 10 };
-  const cityStyle = {fontWeight:'bold' };
-  const countryStyle = {fontWeight:'bold', marginBottom:20}
+  const cardStyle = { minWidth: 180, maxWidth: 300, margin: 10 };
+  const cityStyle = { fontWeight: 'bold' };
+  const countryStyle = { fontWeight: 'bold', marginBottom: 20 };
   return (
     <div
       className='card blue-grey darken-1 col-xs-12 col-sm-6'
       style={cardStyle}
     >
       <div className='card-content white-text'>
-        <div className='card-title' style={cityStyle}>{city}</div>
-        <div className='card-secondary' style={countryStyle}>{country}</div>
+        <div className='card-title' style={cityStyle}>
+          {city}
+        </div>
+        <div className='card-secondary' style={countryStyle}>
+          {country}
+        </div>
         <div className={classes.temp}>
           <p>{temperature}</p>
         </div>
