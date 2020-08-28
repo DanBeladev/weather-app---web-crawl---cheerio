@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import CityCard from './CityCard';
+import FullLoaderPage from './FullLoaderPage';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -24,7 +25,7 @@ const CitiesList = () => {
     <div className={classes.container}>
      {cities.length >0 ? cities.map((city, index) => {
         return <CityCard city={city} key={index} />;
-      }): <div>Empty Locations List</div>}
+      }): <FullLoaderPage />}
     </div>
   )
 };

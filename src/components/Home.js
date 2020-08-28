@@ -4,30 +4,33 @@ import Search from './Search';
 import CitiesList from './CitiesList';
 import FullLoaderPage from './FullLoaderPage';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCitiesAction, addCityAction } from '../actions/appActions';
+import { setCitiesAction, addCityAction,showLoaderAction, hideLoaderAction } from '../actions/appActions';
 
 const Home = (props) => {
   const loading = useSelector((state) => state.app.loading);
   const cities = useSelector((state)=> state.app.cities);
-  console.log('cities selector', cities)
   const dispatch = useDispatch();
   const fetchCities = () => dispatch(setCitiesAction(cities));
   const addCity = (location) => dispatch(addCityAction(location));
+  const showLoader = () => dispatch(showLoaderAction());
+  const hideLoader = () => dispatch(hideLoaderAction());
   
 
   useEffect(() => {
-    if(cities.length === 0 ){
+    if(cities.length === 0 ) {
+      showLoader();
       addCity('Tel-Aviv Israel');
       addCity('Madrid Spain');
+      hideLoader();
     }
-  },[]);
 
-  useEffect(() => {
     const interval = setInterval(() => {
+      showLoader();
       fetchCities();
-    }, 5000);
+      hideLoader();
+    }, 60000);
     return () => clearInterval(interval);
-    });
+  },[]);
 
   return loading ? (
     <FullLoaderPage />

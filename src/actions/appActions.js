@@ -1,24 +1,27 @@
-import { ADD_CITY, SET_CITIES } from './types';
-// import { getPayload, fetchLocationData } from '../mocks/cities';
+import { ADD_CITY, SET_CITIES, SHOW_LOADER, HIDE_LOADER } from './types';
 import { getWeatherData } from '../services/backendService';
 
 export const addCityAction =  (city) => async (dispatch) => {
-  // console.log('going to add location: ', city);
   const res = await getWeatherData(city);
-  // console.log('in client res from server: ' , res);
   dispatch({ type: ADD_CITY, payload: res });
 };
 
 export const setCitiesAction = (cities) => async (dispatch) => {
-  console.log('cities: ',cities);
+  if (cities.length === 0) return;
   const citiesData = [];
   cities.forEach(async (location) => 
   {
     const res = await getWeatherData(`${location.city} ${location.country}`);
-    console.log('res from server: ',res);
     citiesData.push(res);
   }
   );
-  console.log('data: ',citiesData);
   dispatch({ type: SET_CITIES, payload: citiesData });
+};
+
+export const showLoaderAction = () => (dispatch) => {
+  dispatch({ type: SHOW_LOADER});
+};
+
+export const hideLoaderAction = () => (dispatch) => {
+  dispatch({ type: HIDE_LOADER});
 };

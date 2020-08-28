@@ -5,6 +5,8 @@ import { Button, makeStyles } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import {
   addCityAction,
+  showLoaderAction,
+  hideLoaderAction,
 } from '../actions/appActions';
 
 const useStyles = makeStyles((theme) => ({
@@ -29,27 +31,26 @@ const Search = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [text, setText] = useState('');
-  const addCity = (city) =>
-  dispatch(addCityAction(city));
+  const addCity = (city) => dispatch(addCityAction(city));
+  const showLoader = () => dispatch(showLoaderAction());
+  const hideLoader = () => dispatch(hideLoaderAction());
 
-
-  // const input = useSelector(state => state.search.input);
   const buttonClicked = () => {
-    if(text.length > 0)
-    {
+    if (text.length > 0) {
+      showLoader();
       addCity(text);
-      M.toast({html:`Great, ${text} was added successfully`})
+      hideLoader();
+      M.toast({ html: `Great, ${text} was added successfully` });
+      setText('');
+    } else {
+      M.toast({ html: 'Please insert non empty input' });
     }
-      else{
-      M.toast({html:'Please insert non empty input'})
-    }
-  }
+  };
 
   const inputChanged = (event) => {
     const { value } = event.target;
     setText(value);
-    
-  }
+  };
   return (
     <div className={classes.container}>
       <TextField
@@ -58,12 +59,17 @@ const Search = () => {
         type='search'
         variant='outlined'
         placeholder='e.g Rome Italy'
-        inputProps={{min: 0, style: { textAlign: 'center' }}}
+        inputProps={{ min: 0, style: { textAlign: 'center' } }}
         className={classes.searchInput}
-        onChange={event => inputChanged(event)}
+        onChange={(event) => inputChanged(event)}
         value={text}
       />
-      <Button variant='outlined' color='primary' className={classes.serachBtn} onClick={buttonClicked}>
+      <Button
+        variant='outlined'
+        color='primary'
+        className={classes.serachBtn}
+        onClick={buttonClicked}
+      >
         Search Now
       </Button>
     </div>

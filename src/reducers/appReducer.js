@@ -1,7 +1,8 @@
-import { SHOW_LOADER, ADD_CITY, SET_CITIES } from "../actions/types";
+import { SHOW_LOADER, ADD_CITY, SET_CITIES, HIDE_LOADER } from "../actions/types";
   
   const initialState = {
     cities: [],
+    loading: false
   };
   
   export default (state = initialState, action) => {
@@ -12,7 +13,6 @@ import { SHOW_LOADER, ADD_CITY, SET_CITIES } from "../actions/types";
               cities: [...state.cities, action.payload],
             };
             case SET_CITIES:
-              console.log('payload: ', action.payload);              
                 return {
                   ...state,
                   cities: [...action.payload],
@@ -22,6 +22,11 @@ import { SHOW_LOADER, ADD_CITY, SET_CITIES } from "../actions/types";
             ...state,
             loading: true,
           };
+          case HIDE_LOADER:
+            return {
+              ...state,
+              loading: false,
+            };
       default:
         return state;
     }

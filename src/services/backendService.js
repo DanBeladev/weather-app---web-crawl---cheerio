@@ -20,13 +20,3 @@ const sendGetRequest = async (url, errResponse) => {
     return errResponse;
   }
 };
-
-// const sendGetRequest = async (url, errResponse) => {
-//   return axios
-//     .get(url)
-//     .then((res) => {
-//       console.log(res);
-//       return res.data;
-//     })
-//     .catch((err) => console.log(err));
-// };
