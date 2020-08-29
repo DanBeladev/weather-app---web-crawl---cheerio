@@ -12,12 +12,10 @@ export const addCityAction = (city) => async (dispatch) => {
   try {
     console.log('city is: ', city);
     const res = await getWeatherData(city);
-    dispatch({ type: ADD_CITY, payload: res },{ type: WRITE_SUCCESS, payload: city });
-    // dispatch({ type: ADD_CITY, payload: res });
-    // dispatch({ type: WRITE_SUCCESS, payload: city });
+    dispatch({ type: ADD_CITY, payload: res });
   } catch (error) {
+    console.log('in add city, was problem: ', error);
     dispatch({ type: WRITE_ERROR, payload: city });
-    console.log('in add city, was problem');
   }
 };
 

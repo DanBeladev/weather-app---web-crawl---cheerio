@@ -39,17 +39,14 @@ const Search = () => {
   const changeInput = (input) => dispatch(changeInputAction(input));
 
   const buttonClicked = () => {
-    console.log('add clicked, input is: ',input);
-    console.log('message is: ',message);
     if (input.length > 0) {
       showLoader();
       addCity(input);
-      console.log('after add city, message is: ',message);
       hideLoader();
       clearInput();
       M.toast({ html: message });
     } else {
-      M.toast({ html: message });
+      M.toast({ html: 'Please Insert Non-Empty Location' });
     }
   };
 

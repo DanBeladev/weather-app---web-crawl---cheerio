@@ -1,22 +1,19 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-// const pino = require('express-pino-logger')();
+const pino = require('express-pino-logger')();
 const cheerio = require('cheerio');
 const request = require('request');
 const cors = require('cors');
 const WEATHER_URL = 'https://www.timeanddate.com/weather/';
 
-// TODO: remove
-const fs = require('fs');
-
-
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(pino);
+app.use(pino);
 app.use(cors());
 app.get('/ping', (req, res) => {
   res.json({ result: 'pong' });
 });
+
 app.get('/moveo-webcrawl/:location', (req, res) => {
   const location = req.params.location;
   const splittedLocationArray = location.split('+');
@@ -25,13 +22,6 @@ app.get('/moveo-webcrawl/:location', (req, res) => {
   console.log(cityName, country);
   const url = `${WEATHER_URL}/${country}/${cityName}`;
   request(url, (error, response, html) => {
-    // console.log('error obj: ', error);
-    // fs.writeFile(new Date().getTime() + 'response.txt', 
-    // response.body , function (err) {
-    //   if (err) return console.log(err);
-    //   console.log('response > response.txt (' + response.length + ')');
-    // });
-
     if (!error) {
       let weatherDetails = {};
       weatherDetails.city = cityName;
@@ -40,8 +30,6 @@ app.get('/moveo-webcrawl/:location', (req, res) => {
       const $ = cheerio.load(html);
       const title = $('title').text();
       if(title.includes('Unknown address')){
-        // console.log(`going to throw error from server ${cityName} ${country}`);
-        // throw new Error('Location not found, try valid input!') ;
         res.status(400).json('Location not found, try valid input!');
         return;
       }

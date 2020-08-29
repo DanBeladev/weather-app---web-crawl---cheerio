@@ -19,6 +19,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cities: [...state.cities, action.payload],
+        message: `Great! ${action.payload.city} ${action.payload.country} was added successfully`,
       };
     case SET_CITIES:
       return {
@@ -39,7 +40,7 @@ export default (state = initialState, action) => {
       console.log('error written: ', action.payload);
       return {
         ...state,
-        message: `Was a problem to find ${action.payload}, try city name with '-' and then country. e.g New-York USA`,
+        message: `Could'nt find ${action.payload}\n try city name with '-' and then country\n e.g New-York USA`,
       };
       case WRITE_SUCCESS:
         console.log('success written: ', action.payload);
