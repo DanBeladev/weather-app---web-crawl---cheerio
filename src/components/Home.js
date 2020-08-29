@@ -33,7 +33,7 @@ const Home = (props) => {
       showLoader();
       fetchCities();
       hideLoader();
-    }, 60000);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 

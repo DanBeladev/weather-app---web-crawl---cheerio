@@ -10,11 +10,10 @@ import { getWeatherData } from '../services/backendService';
 
 export const addCityAction = (city) => async (dispatch) => {
   try {
-    console.log('city is: ', city);
     const res = await getWeatherData(city);
     dispatch({ type: ADD_CITY, payload: res });
+    dispatch({ type: WRITE_SUCCESS, payload: city });
   } catch (error) {
-    console.log('in add city, was problem: ', error);
     dispatch({ type: WRITE_ERROR, payload: city });
   }
 };

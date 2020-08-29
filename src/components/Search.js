@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { Button, makeStyles } from '@material-ui/core';
@@ -9,6 +9,7 @@ import {
   hideLoaderAction,
 } from '../actions/appActions';
 import { clearInputAction, changeInputAction } from '../actions/searchActions';
+import { TEL_AVIV, MADRID } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,21 +33,34 @@ const Search = () => {
   const dispatch = useDispatch();
   const message = useSelector((state) => state.app.message);
   const input = useSelector((state) => state.search.input);
+  const cities = useSelector((state) => state.app.cities);
   const addCity = (city) => dispatch(addCityAction(city));
   const showLoader = () => dispatch(showLoaderAction());
   const hideLoader = () => dispatch(hideLoaderAction());
   const clearInput = () => dispatch(clearInputAction());
   const changeInput = (input) => dispatch(changeInputAction(input));
 
-  const buttonClicked = () => {
-    if (input.length > 0) {
+  const IsCityAllreadyExist = (input) => {
+    const splitedData = input.split(' ');
+    const city = splitedData[0];
+    const country = splitedData[1];
+    let res = false;
+    cities.forEach((location) => {
+      if (location.city === city && location.country === country) {
+        res = true;
+      }
+    });
+    return res;
+  };
+  // Events
+  const buttonClicked = async () => {
+    if (!IsCityAllreadyExist(input)) {
       showLoader();
       addCity(input);
       hideLoader();
       clearInput();
-      M.toast({ html: message });
     } else {
-      M.toast({ html: 'Please Insert Non-Empty Location' });
+      M.toast({ html: `${input} Already Exist ` });
     }
   };
 
@@ -54,9 +68,25 @@ const Search = () => {
     const { value } = event.target;
     changeInput(value);
   };
+
+  const isDeafaultCities = () => {
+    return message.includes(TEL_AVIV) || message.includes(MADRID);
+  };
+  useEffect(() => {
+    if (!isDeafaultCities() && message.length > 0) {
+      M.toast({ html: message });
+    }
+  }, [message]);
+
   return (
     <div className={classes.container}>
       <TextField
+        onKeyPress={(event) => {
+          if (event.key === 'Enter') {
+            buttonClicked();
+            event.preventDefault();
+          }
+        }}
         id='standard-search'
         label='Search Location Here'
         type='search'

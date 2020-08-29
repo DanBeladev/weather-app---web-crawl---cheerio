@@ -11,6 +11,7 @@ const initialState = {
   cities: [],
   loading: false,
   message: '',
+
 };
 
 export default (state = initialState, action) => {
@@ -19,7 +20,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         cities: [...state.cities, action.payload],
-        message: `Great! ${action.payload.city} ${action.payload.country} was added successfully`,
       };
     case SET_CITIES:
       return {
@@ -37,17 +37,16 @@ export default (state = initialState, action) => {
         loading: false,
       };
     case WRITE_ERROR:
-      console.log('error written: ', action.payload);
       return {
         ...state,
-        message: `Could'nt find ${action.payload}\n try city name with '-' and then country\n e.g New-York USA`,
+        message: `Error: ${action.payload} not found, try again with valid input.
+          e.g New-York USA`,
       };
-      case WRITE_SUCCESS:
-        console.log('success written: ', action.payload);
-        return {
-          ...state,
-          message: `Great! ${action.payload} was added successfully`,
-        };
+    case WRITE_SUCCESS:
+      return {
+        ...state,
+        message: `Great!! ${action.payload} was added successfully`,
+      };
     default:
       return state;
   }
