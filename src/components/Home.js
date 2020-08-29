@@ -7,8 +7,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   setCitiesAction,
   addCityAction,
-  showLoaderAction,
-  hideLoaderAction,
+  // showLoaderAction,
+  // hideLoaderAction,
 } from '../actions/appActions';
 import { TEL_AVIV, MADRID } from '../constants';
 
@@ -18,22 +18,23 @@ const Home = (props) => {
   const dispatch = useDispatch();
   const fetchCities = () => dispatch(setCitiesAction(cities));
   const addCity = (location) => dispatch(addCityAction(location));
-  const showLoader = () => dispatch(showLoaderAction());
-  const hideLoader = () => dispatch(hideLoaderAction());
+  // const showLoader = () => dispatch(showLoaderAction());
+  // const hideLoader = () => dispatch(hideLoaderAction());
 
   useEffect(() => {
     if (cities.length === 0) {
-      showLoader();
+      // showLoader();
       addCity(TEL_AVIV);
       addCity(MADRID);
-      hideLoader();
+      // hideLoader();
     }
 
     const interval = setInterval(() => {
-      showLoader();
+      // showLoader();
       fetchCities();
-      hideLoader();
-    }, 5000);
+      console.log('i fetched');
+      // hideLoader();
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
 

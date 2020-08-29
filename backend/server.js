@@ -10,16 +10,11 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(pino);
 app.use(cors());
-app.get('/ping', (req, res) => {
-  res.json({ result: 'pong' });
-});
-
 app.get('/moveo-webcrawl/:location', (req, res) => {
   const location = req.params.location;
   const splittedLocationArray = location.split('+');
   const cityName = splittedLocationArray[0];
   const country = splittedLocationArray[1];
-  console.log(cityName, country);
   const url = `${WEATHER_URL}/${country}/${cityName}`;
   request(url, (error, response, html) => {
     if (!error) {
@@ -33,7 +28,6 @@ app.get('/moveo-webcrawl/:location', (req, res) => {
         res.status(400).json('Location not found, try valid input!');
         return;
       }
-      console.log('title: ',title);
       let imageSrc = $('#cur-weather').attr('src');
       weatherDetails.image = imageSrc;
       $('#qlook').each((i, el) => {

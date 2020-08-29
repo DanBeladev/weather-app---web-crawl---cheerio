@@ -5,8 +5,6 @@ import { Button, makeStyles } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addCityAction,
-  showLoaderAction,
-  hideLoaderAction,
 } from '../actions/appActions';
 import { clearInputAction, changeInputAction } from '../actions/searchActions';
 import { TEL_AVIV, MADRID } from '../constants';
@@ -20,23 +18,27 @@ const useStyles = makeStyles((theme) => ({
   serachBtn: {
     height: '50px',
     width: '12%',
+    borderColor: 'black',
+    color: 'black'
   },
   searchInput: {
     marginInlineEnd: '10px',
     width: '50%',
     height: '100%',
+    borderColor: 'black',
+    color: 'black'
   },
 }));
 
 const Search = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const message = useSelector((state) => state.app.message);
   const input = useSelector((state) => state.search.input);
   const cities = useSelector((state) => state.app.cities);
+
   const addCity = (city) => dispatch(addCityAction(city));
-  const showLoader = () => dispatch(showLoaderAction());
-  const hideLoader = () => dispatch(hideLoaderAction());
   const clearInput = () => dispatch(clearInputAction());
   const changeInput = (input) => dispatch(changeInputAction(input));
 
@@ -52,12 +54,14 @@ const Search = () => {
     });
     return res;
   };
-  // Events
+
   const buttonClicked = async () => {
+    if(input.length === 0){
+      M.toast({ html: `Please Insert Non-Empty Location` });
+      return;
+    }
     if (!IsCityAllreadyExist(input)) {
-      showLoader();
       addCity(input);
-      hideLoader();
       clearInput();
     } else {
       M.toast({ html: `${input} Already Exist ` });
@@ -72,6 +76,7 @@ const Search = () => {
   const isDeafaultCities = () => {
     return message.includes(TEL_AVIV) || message.includes(MADRID);
   };
+
   useEffect(() => {
     if (!isDeafaultCities() && message.length > 0) {
       M.toast({ html: message });
@@ -87,12 +92,13 @@ const Search = () => {
             event.preventDefault();
           }
         }}
+        autoFocus
         id='standard-search'
         label='Search Location Here'
         type='search'
         variant='outlined'
         placeholder='e.g Rome Italy'
-        inputProps={{ min: 0, style: { textAlign: 'center' } }}
+        inputProps={{ min: 0, style: { textAlign: 'center', borderColor:'black' } }}
         className={classes.searchInput}
         onChange={(event) => inputChanged(event)}
         value={input}

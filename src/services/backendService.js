@@ -14,11 +14,9 @@ export const getWeatherData = async (locationName) => {
 const sendGetRequest = async (url, errResponse) => {
   try {
     const res = await axios.get(url);
-    console.log(`in axios the res for ${url} is`, res.data);
     return res.data;
   } catch (error) {
     console.log(`in axios was error in request to ${url}`, error);
     throw error;
-    // return errResponse;
   }
 };
