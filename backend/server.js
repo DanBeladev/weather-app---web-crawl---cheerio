@@ -7,10 +7,12 @@ const cors = require('cors');
 const WEATHER_URL = 'https://www.timeanddate.com/weather/';
 
 const app = express();
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(pino);
 app.use(cors());
-app.get('/moveo-webcrawl/:location', (req, res) => {
+
+const webScrape = (req, res) => {
   const location = req.params.location;
   const splittedLocationArray = location.split('+');
   const cityName = splittedLocationArray[0];
@@ -21,10 +23,9 @@ app.get('/moveo-webcrawl/:location', (req, res) => {
       let weatherDetails = {};
       weatherDetails.city = cityName;
       weatherDetails.country = country;
-      // TODO: move the scrapping logic to another place
       const $ = cheerio.load(html);
       const title = $('title').text();
-      if(title.includes('Unknown address')){
+      if (title.includes('Unknown address')) {
         res.status(400).json('Location not found, try valid input!');
         return;
       }
@@ -47,8 +48,10 @@ app.get('/moveo-webcrawl/:location', (req, res) => {
       res.status(401).json(`ERROR happened, request failed: ${error}`);
     }
   });
-});
+};
 
-app.listen(3001, () =>
-  console.log('Express server is running on localhost:3001')
-);
+app.get('/moveo-webcrawl/:location', (req, res) => webScrape(req, res));
+
+const port = process.env.PORT || '3001';
+
+app.listen(port, () => console.log(`Server Listen On Port: ${port}`));
