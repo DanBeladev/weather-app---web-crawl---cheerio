@@ -3,9 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import { Button, makeStyles } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  addCityAction,
-} from '../actions/appActions';
+import { addCityAction } from '../actions/appActions';
 import { clearInputAction, changeInputAction } from '../actions/searchActions';
 import { TEL_AVIV, MADRID } from '../constants';
 
@@ -19,14 +17,14 @@ const useStyles = makeStyles((theme) => ({
     height: '50px',
     width: '12%',
     borderColor: 'black',
-    color: 'black'
+    color: 'black',
   },
   searchInput: {
     marginInlineEnd: '10px',
     width: '50%',
     height: '100%',
     borderColor: 'black',
-    color: 'black'
+    color: 'black',
   },
 }));
 
@@ -34,7 +32,7 @@ const Search = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const message = useSelector((state) => state.app.message);
+  const message = useSelector((state) => state.messages.message);
   const input = useSelector((state) => state.search.input);
   const cities = useSelector((state) => state.app.cities);
 
@@ -56,7 +54,7 @@ const Search = () => {
   };
 
   const buttonClicked = async () => {
-    if(input.length === 0){
+    if (input.length === 0) {
       M.toast({ html: `Please Insert Non-Empty Location` });
       return;
     }
@@ -98,7 +96,10 @@ const Search = () => {
         type='search'
         variant='outlined'
         placeholder='e.g Rome Italy'
-        inputProps={{ min: 0, style: { textAlign: 'center', borderColor:'black' } }}
+        inputProps={{
+          min: 0,
+          style: { textAlign: 'center', borderColor: 'black' },
+        }}
         className={classes.searchInput}
         onChange={(event) => inputChanged(event)}
         value={input}

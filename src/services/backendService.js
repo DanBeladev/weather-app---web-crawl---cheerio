@@ -10,7 +10,6 @@ export const getWeatherData = async (locationName) => {
   return weatherDetails;
 };
 
-// Private function
 const sendGetRequest = async (url, errResponse) => {
   try {
     const res = await axios.get(url);
