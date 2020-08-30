@@ -14,10 +14,10 @@ Run the app from the `https://github.com/DanBeladev/weather-app---web-crawl---ch
 
 ```
 npm install
-npm run dev
+npm start
 ```
 
-The server should now run locally on port 3001 and clien on port 3000
+The server should now run on Heroku server and client on port 3000
 
 You can access it from the browser via: `http://localhost:3000`
 
